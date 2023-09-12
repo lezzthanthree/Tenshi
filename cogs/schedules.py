@@ -106,6 +106,7 @@ class ScheduleCommands(commands.Cog):
         if len(data) == 0:
             await ctx.followup.send(f"Schedule # `{scheduleid}` does not exist. Please type `/subjects` to see available subject codes.", ephemeral=True)
             return
+        
         if not check_time(starttime) or not check_time(endtime):
             await ctx.followup.send(f"`starttime` and `endtime` must be in `HH:MM` format. \n" +
                                      "Examples: `23:00`, `12:30`, `21:45`", ephemeral=True)
@@ -120,17 +121,15 @@ class ScheduleCommands(commands.Cog):
         await ctx.followup.send(embed=embed_var, view=confirmation, ephemeral=True)
         await confirmation.wait()
 
-        get_original = await ctx.original_response()
-
         if confirmation.value == 0:
-            await get_original.edit(content="Adding a new schedule has been cancelled.", embed=None, view=None)
+            await ctx.edit_original_response(content="Adding a new schedule has been cancelled.", embed=None, view=None)
             return
         elif confirmation.value == None:
-            await get_original.edit(content="Response timeout.", embed=None, view=None)
+            await ctx.edit_original_response(content="Response timeout.", embed=None, view=None)
             return
         
         Database.execute_command(update['schedule'], (day.name, starttime, endtime, scheduleid))
-        await get_original.edit(content=f"Schedule #{scheduleid} has been updated", embed=None, view=None)
+        await ctx.edit_original_response(content=f"Schedule #{scheduleid} has been updated", embed=None, view=None)
 
     @app_commands.command(name="schedule", description="Shows current schedule on day specified.")
     @app_commands.describe()

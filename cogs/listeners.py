@@ -13,6 +13,7 @@ class Listeners(commands.Cog):
     async def on_ready(self):
         Database.execute_command(create['guild'], ())
         Database.execute_command(create['subject'], ())
+        Database.execute_command(create['enrollment'], ())
         Database.execute_command(create['schedule'], ())
         
         await self.bot.tree.sync()
