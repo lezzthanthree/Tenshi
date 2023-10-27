@@ -266,7 +266,7 @@ read = {
         SELECT schedule_id, subject_name, schedule_start, schedule_end
         FROM schedules
         INNER JOIN subjects ON schedules.subject_id = subjects.subject_id
-        WHERE schedule_day = ? AND schedules.server_id = ?
+        WHERE schedule_day = ? AND schedules.guild_id = ?
         ORDER BY schedule_start ASC
     """,
 
