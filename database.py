@@ -247,7 +247,7 @@ read = {
         WHERE subject_id = ? AND ownership_id = ?
     """,
 
-    'enrolled_subjects_from_code': """
+    'enrolled_subject_from_code': """
         SELECT enrollments.subject_id, subject_name
         FROM enrollments
         INNER JOIN subjects ON enrollments.subject_id = subjects.subject_id
