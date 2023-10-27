@@ -15,6 +15,7 @@ class Listeners(commands.Cog):
         Database.execute_command(create['subject'], ())
         Database.execute_command(create['enrollment'], ())
         Database.execute_command(create['schedule'], ())
+        Database.execute_command(create['homework'], ())
         
         await self.bot.tree.sync()
         for guild in self.bot.guilds:

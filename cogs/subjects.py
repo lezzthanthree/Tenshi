@@ -36,14 +36,17 @@ class SubjectCommands(commands.Cog):
             await ctx.followup.send(f"`{code}` is in the database. Please rename your subject code", ephemeral=True)
             return
         
-        await self.start_confirmation(ctx,
-                                      "This subject will be created for enrollment. Confirm?",
-                                      code,
-                                      subject,
-                                      f"{subject} has been created to the database.",
-                                      "Creating a new subject has been cancelled.",
-                                      database_command=insert['subject'],
-                                      database_parameters=(code, subject, ctx.guild.id))
+        created = await self.start_confirmation(ctx,
+                                                "This subject will be created for enrollment. Confirm?",
+                                                code,
+                                                subject,
+                                                f"{subject} has been created to the database.",
+                                                "Creating a new subject has been cancelled.",
+                                                database_command=insert['subject'],
+                                                database_parameters=(code, subject, ctx.guild.id))
+        
+        if not created:
+            return
         
         await self.start_confirmation(ctx,
                                       "Do you also wish this server to enroll on this subject?",
@@ -106,6 +109,23 @@ class SubjectCommands(commands.Cog):
     @app_commands.describe(code="The subject's code")
     @app_commands.guild_only()
     async def unenroll_subject(self, ctx: discord.Interaction, code: str):
+        await ctx.response.defer(ephemeral=True)
+
+        data = Database.get_data(read['search_subject'], (code, code, ctx.guild.id))
+
+        if len(data) == 0:
+            await ctx.followup.send(f"Subject code `{code}` does not exist. Please type `/subjects` to see enrolled subjects on this server.", ephemeral=True)
+            return
+
+        await self.start_confirmation(ctx,
+                                      "Server will be unenrolling this subject. Confirm?",
+                                      data[0][0],
+                                      data[0][1],
+                                      f"{code} has successfully been unenrolled to this server.",
+                                      "Unenrolling a subject has been cancelled.",
+                                      database_command=delete['enrollment'],
+                                      database_parameters=(ctx.guild.id, code))
+
         pass
 
     @app_commands.command(name="subjects", description="Shows enrolled subjects on this server")
