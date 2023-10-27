@@ -73,7 +73,7 @@ class ScheduleCommands(commands.Cog):
             await get_original.edit(content="Response timeout.", embed=None, view=None)
             return
         
-        Database.execute_command(insert['schedule'], (code, day.name, starttime, endtime, ctx.guild_id))
+        Database.execute_command(insert['schedule'], (ctx.guild_id, code, day.name, starttime, endtime))
 
         await get_original.edit(content=f"{data[0][1]} has been added to the schedule list.", embed=None, view=None)
 
