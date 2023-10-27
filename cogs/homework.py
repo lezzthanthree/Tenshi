@@ -46,7 +46,7 @@ class Homework(commands.Cog):
                                                           deadline: str = None):
         await ctx.response.defer(ephemeral=True)
 
-        data = Database.get_data(read['enrolled_subjects_from_code'], (code, ctx.guild.id))
+        data = Database.get_data(read['enrolled_subject_from_code'], (code, ctx.guild.id))
 
         if deadline == None:
             deadline = "No deadline"
