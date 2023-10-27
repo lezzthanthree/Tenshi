@@ -46,7 +46,7 @@ class ScheduleCommands(commands.Cog):
                                                            endtime: str):
         await ctx.response.defer(ephemeral=True)
 
-        data = Database.get_data(read['enrollment_from_code'], (code, ctx.guild.id))
+        data = Database.get_data(read['enrolled_subject_from_code'], (code, ctx.guild.id))
 
         if len(data) == 0:
             await ctx.followup.send(f"Subject code `{code}` does not exist. Please type `/subjects` to see available subject codes.", ephemeral=True)
